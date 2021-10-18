@@ -20,13 +20,13 @@ class App extends React.Component {
       if (userAuth) {
         const userRef = await createUserProfileDocument(userAuth);
         userRef.onSnapshot((snapShot) => {
-          setCurrentUser({
+          this.props.setCurrentUser({
             id: snapShot.id,
             ...snapShot.data(),
           });
         });
-        setCurrentUser(userAuth);
       }
+      this.props.setCurrentUser(userAuth);
     });
   }
   componentWillUnmount() {
@@ -35,7 +35,7 @@ class App extends React.Component {
   render() {
     return (
       <div>
-        <Header />
+        <Header currentUser={this.props.currentUser} />
         <Switch>
           <Route exact path="/" component={HomePage} />
           <Route path="/shop" component={ShopPage} />
@@ -57,11 +57,11 @@ class App extends React.Component {
   }
 }
 
-const mapStateToProps = (createStructuredSelector) => ({
+const mapStateToProps = createStructuredSelector({
   currentUser: selectCurrentUser,
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  setCurrentUser: (user) => dispatch(user),
+  setCurrentUser: (user) => dispatch(setCurrentUser(user)),
 });
 export default connect(mapStateToProps, mapDispatchToProps)(App);
