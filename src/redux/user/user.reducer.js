@@ -1,7 +1,5 @@
 import { UserActionTypes } from "./user.type";
 
-const { Switch } = require("react-router-dom");
-
 const INITIAL_STATE = {
   currentUser: null,
 };

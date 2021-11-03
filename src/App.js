@@ -11,22 +11,24 @@ import { setCurrentUser } from "./redux/user/user.actions";
 import { selectCurrentUser } from "./redux/user/user.selectors";
 import { createStructuredSelector } from "reselect";
 import CheckoutPage from "./pages/checkout/checkout.component";
+import Teste from "./pages/teste/teste.components";
+import { selectCollectionsForPreview } from "./redux/shop/shop.selectors";
 class App extends React.Component {
   unsubscribeFromAuth = null;
 
   componentDidMount() {
-    // conferir const { setCurrentUser } = this.props;
+    const { setCurrentUser } = this.props;
     this.unsubscribeFromAuth = auth.onAuthStateChanged(async (userAuth) => {
       if (userAuth) {
         const userRef = await createUserProfileDocument(userAuth);
         userRef.onSnapshot((snapShot) => {
-          this.props.setCurrentUser({
+          setCurrentUser({
             id: snapShot.id,
             ...snapShot.data(),
           });
         });
       }
-      this.props.setCurrentUser(userAuth);
+      setCurrentUser(userAuth);
     });
   }
   componentWillUnmount() {
@@ -38,6 +40,7 @@ class App extends React.Component {
         <Header currentUser={this.props.currentUser} />
         <Switch>
           <Route exact path="/" component={HomePage} />
+          <Route path="/teste" component={Teste} />
           <Route path="/shop" component={ShopPage} />
           <Route exact path="/checkout" component={CheckoutPage} />
           <Route
@@ -59,6 +62,7 @@ class App extends React.Component {
 
 const mapStateToProps = createStructuredSelector({
   currentUser: selectCurrentUser,
+  collectionsArray: selectCollectionsForPreview,
 });
 
 const mapDispatchToProps = (dispatch) => ({
