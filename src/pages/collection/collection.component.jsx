@@ -2,6 +2,7 @@ import React from "react";
 //import "./collection.styles.scss";
 import { connect } from "react-redux";
 import { selectCollection } from "../../redux/shop/shop.selectors.js";
+
 import {
   CollectionPageContainer,
   ItemsContainer,
